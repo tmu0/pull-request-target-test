@@ -26,6 +26,8 @@ jobs:
         env:
           MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
           GITHUB_PR_SHA: ${{ github.event.pull_request.head.sha }}
+          GITHUB_REF: ${{ github.ref }}
         run: |
+          echo $GITHUB_REF
           ls -la $GITHUB_PR_SHA
           python3 main.py
