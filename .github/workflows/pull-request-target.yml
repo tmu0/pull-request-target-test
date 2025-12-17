@@ -1,0 +1,23 @@
+on:
+  pull_request_target:
+
+permissions:
+  contents: write
+
+jobs:
+  run-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: "${{ github.event.pull_request.merge_commit_sha }}"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run main
+        env:
+          MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          cat README.md
+          python3 main.py
