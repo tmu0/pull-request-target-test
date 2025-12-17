@@ -8,9 +8,13 @@ jobs:
   run-main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout base
+        uses: actions/checkout@v5
+      - name: Checkout PR
+        uses: actions/checkout@v5
         with:
-          ref: "${{ github.event.pull_request.merge_commit_sha }}"
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -18,6 +22,6 @@ jobs:
       - name: Run main
         env:
           MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          GITHUB_PR_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          cat README.md
           python3 main.py
