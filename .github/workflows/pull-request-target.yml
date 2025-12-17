@@ -9,12 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout base
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Checkout PR
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           path: ${{ github.event.pull_request.head.sha }}
+          sparse-checkout: |
+            README.md
+          sparse-checkout-cone-mode: false
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -24,4 +27,5 @@ jobs:
           MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
           GITHUB_PR_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          ls -la $GITHUB_PR_SHA
           python3 main.py
